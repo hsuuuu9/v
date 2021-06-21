@@ -1,347 +1,227 @@
 <template>
-  <div id="all">
-    <br />
-    <div class="row">
-      <div class="col-2"></div>
-      <div class="col-1"><img id="prev" v-on:click="currdeg+=120;Previous();" src="@/assets/previous.png"></div>
-      <div class="col-1"></div>
-      <div class="col-4">
-        <div class="container">
-  <div class="carousel" id ='tmp'>
-    <div class="item a"><img id='day' src="@/assets/day.png"></div>
-    <div class="item c"><img id='week' src="@/assets/week.png"></div>
-    <div class="item e"><img id='month' src="@/assets/month.png"></div>
-
-  </div>
-</div>
-
+  <br />
+  <div class="row">
+    <div class="col-1"></div>
+    <div class="col-3">
+      <img v-on:click="scrollUp()" src="@/assets/blackup.png" />
+      <br /><br />
+      <div class="information">
+        <transition-group
+          name="information-list"
+          tag="p"
+          class="information__list"
+        >
+          <span
+            v-on:click="flag = item.id - negative + uppoint"
+            v-for="item in showItem"
+            :key="item.id"
+            class="information__list__item"
+            v-bind:class="{
+              infoA: item.importance == 'a',
+              infoB: item.importance == 'b',
+              infoC: item.importance == 'c',
+            }"
+            >{{ item.title }}</span
+          >
+        </transition-group>
+        <img v-on:click="scrollDown()" src="@/assets/blackdown.png" />
       </div>
-      <div class="col-1 text-left"><img id="next" v-on:click="currdeg-=120;Next();" src="@/assets/next.png"></div>
-      </div>
-    <br /><br />
-    <div class="row">
-      <div class="col-2">
-        <p id='start'>08.01</p>
-        <img id = 'yaji' src="@/assets/yajirusi.png">
-        <p id='end'>08.31</p>
-        </div>
-      <div class="col-1"></div>
-      <div id = 'main' class="col-8">
-        <table>
-          <tbody>
-            <tr v-for="book in books" v-bind:key="book.rank">
-              <div class="row">
-                <div class="col-1">
-                  <td v-if="book.rank == '1'"><p class='rank1'>{{ book.rank }}</p></td>
-                  <td v-else-if="book.rank == '2'"><p class='rank2'>{{ book.rank }}</p></td>
-                  <td v-else-if="book.rank == '3'"><p class='rank3'>{{ book.rank }}</p></td>
-                  <td v-else><p class='rankother'>{{ book.rank }}</p></td>
-
-                  <td v-if="book.updown == 'up' && (book.rank == '1'||book.rank == '2' || book.rank == '3')"><img id='updown' src="@/assets/up.png"></td>
-                  <td v-if="book.updown == 'up' && (book.rank != '1'&&book.rank != '2' && book.rank != '3')"><img id='updownother' src="@/assets/up.png"></td>
-                  <td v-if="book.updown == 'down' && (book.rank == '1'||book.rank == '2' || book.rank == '3')"><img id='updown' src="@/assets/down.png"></td>
-                  <td v-if="book.updown == 'down' && (book.rank != '1'&&book.rank != '2' && book.rank != '3')"><img id='updownother' src="@/assets/down.png"></td>
-                  <td v-if="book.updown == 'stay' && (book.rank == '1'||book.rank == '2' || book.rank == '3')"><img id='updown' src="@/assets/stay.png"></td>
-                  <td v-if="book.updown == 'stay' && (book.rank != '1'&&book.rank != '2' && book.rank != '3')"><img id='updownother' src="@/assets/stay.png"></td>
-                </div>
-                <div class="col-1">
-                  <td v-if="book.rank == '1'"><img class = 'top1' :src="book.icon_path" /></td>
-                  <td v-else-if="book.rank == '2'||book.rank == '3'"><img class = 'top23' :src="book.icon_path" /></td>
-                  <td v-else><img class = 'under4' :src="book.icon_path" /></td>
-                </div>
-                <div class="col-3">
-                  <td v-if="book.rank == '1'"><p class='name1'>{{ book.name }}</p></td>
-                  <td v-else-if="book.rank == '2'||book.rank == '3'"><p class='name23'>{{ book.name }}</p></td>
-                  <td v-else><p class='nameother'>{{ book.name }}</p></td>
-                  </div>
-                  <div class="col-1"></div>
-                  <div class="col-1">
-                  <td v-if="book.rank == '1'"><p class='point1'>{{ book.points }}</p></td>
-                  <td v-else-if="book.rank == '2'||book.rank == '3'"><p class='point23'>{{ book.points }}</p></td>
-                  <td v-else><p class='pointother'>{{ book.points }}</p></td>
-                </div>
-                <div class="col-1">
-                  <td v-if="book.rank == '1'"><p class='point1'>pt</p></td>
-                  <td v-else-if="book.rank == '2'||book.rank == '3'"><p class='point23'>pt</p></td>
-                  <td v-else><p class='pointother'>pt</p></td>
-                </div>
-
-
-
-              </div>
-            </tr>
-          </tbody>
-        </table>
+    </div>
+    <div
+      class="col-6"
+      v-bind:class="{
+        infoAbg: items[flag].importance == 'a',
+        infoBbg: items[flag].importance == 'b',
+        infoCbg: items[flag].importance == 'c',
+      }"
+    >
+      <div>
+        <p>{{ items[flag].id }}</p>
       </div>
     </div>
   </div>
 </template>
 
-
-
 <script>
 export default {
-  name: "App",
   data() {
     return {
-      currdeg:0,
-      books: [
-        {
-          rank: 1,
-          icon_path: require("@/assets/Python.png"),
-          name: "しゅういち",
-          points: "143",
-          updown: "up",
-        },
-        {
-          rank: 2,
-          icon_path: require("@/assets/shark.png"),
-          name: "にわとり",
-          points: "126",
-          updown: "down",
-        },
-        {
-          rank: 3,
-          icon_path: require("@/assets/nikkei2.png"),
-          name: "カンパチ",
-          points: "101",
-          updown: "stay",
-        },
-        {
-          rank: 4,
-          icon_path: require("@/assets/red.png"),
-          name: "okinawa",
-          points: "93",
-          updown: "up",
-        },
-        {
-          rank: 5,
-          icon_path: require("@/assets/twitter.png"),
-          name: "ウォーター",
-          points: "88",
-          updown: "down",
-        },
-        {
-          rank: 6,
-          icon_path: require("@/assets/menub.png"),
-          name: "まな",
-          points: "68",
-          updown: "stay",
-        },
+      flag: 0,
+      negative: 0,
+      uppoint: 0,
+      start: 0,
+      end: 5,
+      items: [
+        { id: 0, title: "zero", importance: "a", text: "fake" },
+        { id: 1, title: "one", importance: "a", text: "ger" },
+        { id: 2, title: "two", importance: "b", text: "htersf" },
+        { id: 3, title: "three", importance: "c", text: "htesfg" },
+        { id: 4, title: "four", importance: "a", text: "gresg" },
+        { id: 5, title: "five", importance: "b", text: "htrdf" },
+        { id: 6, title: "six", importance: "b", text: "htf" },
+        { id: 7, title: "seven", importance: "c", text: "htredfg" },
+        { id: 8, title: "eight", importance: "a", text: "jty" },
+        { id: 9, title: "nine", importance: "b", text: "htr" },
+        { id: 10, title: "ten", importance: "c", text: "jhrtg" },
+        { id: 11, title: "eleven", importance: "c", text: "htrd" },
       ],
     };
   },
-  methods: {
-    Next() {
-    var currdeg = this.currdeg;
-    document.getElementById('tmp').style.transform =  "rotateY("+currdeg+"deg)";
-
- if(currdeg%360==0){
-    document.getElementById('month').style.marginLeft = '60px';
-    document.getElementById('week').style.marginLeft = '-30px';
-    document.getElementById('day').style.marginLeft = '-30px';
-  }else if((currdeg+36000)%360==120){
-    document.getElementById('month').style.marginLeft = '-30px';
-    document.getElementById('week').style.marginLeft = '60px';
-    document.getElementById('day').style.marginLeft = '-30px';
-  }else if((currdeg+36000)%360==240){
-    document.getElementById('month').style.marginLeft = '-30px';
-    document.getElementById('week').style.marginLeft = '-30px';
-    document.getElementById('day').style.marginLeft = '60px';
-  }
-    },
-        Previous() {
-    var currdeg = this.currdeg;
-    document.getElementById('tmp').style.transform =  "rotateY("+currdeg+"deg)";
-
-  if(currdeg%360==0){
-    document.getElementById('month').style.marginLeft = '60px';
-    document.getElementById('week').style.marginLeft = '-30px';
-    document.getElementById('day').style.marginLeft = '-30px';
-  }else if((currdeg+36000)%360==120){
-    document.getElementById('month').style.marginLeft = '-30px';
-    document.getElementById('week').style.marginLeft = '60px';
-    document.getElementById('day').style.marginLeft = '-30px';
-  }else if((currdeg+36000)%360==240){
-    document.getElementById('month').style.marginLeft = '-30px';
-    document.getElementById('week').style.marginLeft = '-30px';
-    document.getElementById('day').style.marginLeft = '60px';
-  }
+  created() {
+    this.scrollUp();
+    this.scrollDown();
+  },
+  computed: {
+    showItem() {
+      return this.items.slice(this.start, this.end);
     },
   },
-}
+  methods: {
+    scrollUp() {
+      if (this.uppoint <= 6) {
+        this.negative += 1;
+        this.uppoint += 1;
+        this.start += 1;
+        this.end += 1;
+        document.querySelectorAll('.information__list__item.infoA').style;
+      }
+    },
+    scrollDown() {
+      if (this.uppoint >= 1) {
+        this.negative -= 1;
+        this.uppoint -= 1;
+        this.start -= 1;
+        this.end -= 1;
+      }
+    },
+  },
+};
 </script>
 
-
-
 <style>
-.top1{
-  width: 120%;
-  margin-top: 20px;
+.information__list {
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
 }
-.top23{
-  width: 120%;
-  margin-top: 10px;
+.information__list__item {
+  padding: 0.5em 1em;
+  margin: 1.1em;
+  color: #5d627b;
+  background: white;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.22);
+  transition: all 0.6s;
 }
-.under4{
-  width: 100%;
-  width:30px;
-	height:30px;
-  margin-left: 4px;
-  margin-bottom: 4px;
+.infoA {
+  border-top: solid 5px rgb(231, 121, 18);
+}
+.infoB {
+  border-top: solid 5px rgb(37, 66, 226);
+}
+.infoC {
+  border-top: solid 5px #5d627b;
+}
+.information-list-enter {
+  opacity: 0;
+  transform: translateY(35px);
+}
+.information-list-leave-to {
+  opacity: 0;
+  transition: all 0.01s;
+}
+.information-list-leave-active {
+  position: absolute;
+  width: 253.5px;
 }
 img {
-	width:50px;
-	height:50px;
-	object-fit:cover;
-	border-radius:50%;
+  width: 40px;
+  height: 20px;
+  margin-left: 120px;
 }
-#day,#week{
-	width:100%;
-  border-radius:0% !important;
-  margin-left: -30px;
-}
-#month
-{
-	width:100%;
-  border-radius:0% !important;
-  margin-left: 60px;
-}
-#prev{
-  width:40%;
-  height:auto;
-  border-radius:0% !important;
-  margin-left:60px;
-  margin-bottom:-70px;
-}
-
-#next{
-  width:40%;
-  height:auto;
-  border-radius:0% !important;
-  margin-left:80px;
- margin-bottom:-70px;
-
-}
-p{
-  font-family: 'Josefin Slab', serif;
-}
-.rank1{
-  font-size: 75px;
-  color:#e4e01b;
-  padding-left: 4px;
-}
-.rank2{
-  font-size: 55px;
-  color:#afafaa;
-}
-.rank3{
-  font-size: 55px;
-  color:#e49e1b;
-}
-.rankother{
-  font-size: 20px;
-  padding-left: 5px;
-}
-.name1{
-  font-family: 'Josefin Slab', serif;
-font-family: 'Noto Sans JP', sans-serif;
-padding-top: 15px;
-font-size: 35px;
-}
-.name23{
-    font-family: 'Josefin Slab', serif;
-font-family: 'Noto Sans JP', sans-serif;
-padding-top: 10px;
-font-size: 25px;
-}
-.nameother{
-  font-family: 'Josefin Slab', serif;
-font-family: 'Noto Sans JP', sans-serif;
-font-size: 15px;
-}
-.point1{
-  font-size: 40px;
-  padding-top: 15px;
-
-}
-.point23{
-  font-size: 40px;
-  padding-top: 10px;
-}
-.pointother{
-  font-size: 23px;
-  padding-left: 10px;
-}
-#updown{
-  width: 150%;
-  height: auto;
-  margin-bottom: 10px;
-  margin-left: 3px;
-  border-radius:0% !important
-}
-#updownother{
-  width: 50%;
-  height: auto;
-  margin-bottom: 1px;
-  margin-left: 15px;
-  border-radius:0% !important
-}
-.container {
-  margin: 0 auto;
-  width: 190px;
-  height: 80px;
+.infoAbg {
+  background-color: #fff;
+  margin: 2em 0;
+  padding: 2em;
   position: relative;
-  perspective: 700px;
+  z-index: 1;
 }
-
-.carousel {
+.infoAbg::before,
+.infoAbg::after {
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  content: "";
   height: 100%;
+  position: absolute;
   width: 100%;
+}
+.infoAbg::before {
+  background-color: rgba(255, 255, 255, 0.5);
+  left: 0;
+  top: 0;
+  z-index: -1;
+}
+.infoAbg::after {
+  background-color: #fcf5f0;
+  top: 10px;
+  left: 10px;
+  z-index: -2;
+}
+
+.infoBbg {
+  background-color: #fff;
+  margin: 2em 0;
+  padding: 2em;
+  position: relative;
+  z-index: 1;
+}
+.infoBbg::before,
+.infoBbg::after {
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  content: "";
+  height: 100%;
   position: absolute;
-  transform-style: preserve-3d;
-  transition: transform 1s;
+  width: 100%;
+}
+.infoBbg::before {
+  background-color: rgba(255, 255, 255, 0.5);
+  left: 0;
+  top: 0;
+  z-index: -1;
+}
+.infoBbg::after {
+  background-color: #ecebfc;
+  top: 10px;
+  left: 10px;
+  z-index: -2;
 }
 
-.item {
-  display: block;
+.infoCbg {
+  background-color: #fff;
+  margin: 2em 0;
+  padding: 2em;
+  position: relative;
+  z-index: 1;
+}
+.infoCbg::before,
+.infoCbg::after {
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  content: "";
+  height: 100%;
   position: absolute;
-
-  line-height: 100px;
-  text-align: center;
+  width: 100%;
 }
-
-.a {
-  transform: rotateY(0deg) translateZ(250px);
+.infoCbg::before {
+  background-color: rgba(255, 255, 255, 0.5);
+  left: 0;
+  top: 0;
+  z-index: -1;
 }
-
-.c {
-  transform: rotateY(120deg) translateZ(250px);
-}
-
-.e {
-  transform: rotateY(240deg) translateZ(250px);
-}
-#main{
-  margin-left: 40px;
-}
-#start{
-  margin-left: 50px;
-  font-size: 35px;
-  margin-top: 30px;
-  margin-bottom: -50px;
-
-}
-#yaji{
-  border-radius:0% !important;
-  width:100%;
-  height: auto;
-  margin-left: 40px;
-}
-
-#end{
-font-size: 35px;
-margin-left: 160px;
-margin-top: -45px;
+.infoCbg::after {
+  background-color: #e5e4e7;
+  top: 10px;
+  left: 10px;
+  z-index: -2;
 }
 </style>
