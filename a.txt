@@ -2,7 +2,7 @@
   <br />
   <div class="row">
     <div class="col-1"></div>
-    <div class="col-3">
+    <div class="col-3" @wheel="countUp">
       <img v-on:click="scrollUp()" src="@/assets/blackup.png" />
       <br /><br />
       <div class="information">
@@ -83,7 +83,7 @@ export default {
         this.uppoint += 1;
         this.start += 1;
         this.end += 1;
-        document.querySelectorAll('.information__list__item.infoA').style;
+        document.querySelectorAll(".information__list__item.infoA").style;
       }
     },
     scrollDown() {
@@ -92,6 +92,24 @@ export default {
         this.uppoint -= 1;
         this.start -= 1;
         this.end -= 1;
+      }
+    },
+    countUp: function (event) {
+      if (event.deltaY < 0) {
+        if (this.uppoint <= 6) {
+          this.negative += 1;
+          this.uppoint += 1;
+          this.start += 1;
+          this.end += 1;
+          document.querySelectorAll(".information__list__item.infoA").style;
+        }
+      } else if (event.deltaY > 0) {
+        if (this.uppoint >= 1) {
+          this.negative -= 1;
+          this.uppoint -= 1;
+          this.start -= 1;
+          this.end -= 1;
+        }
       }
     },
   },
