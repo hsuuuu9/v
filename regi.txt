@@ -1,0 +1,199 @@
+<template>
+  <div class="signup__container">
+    <div class="container__child signup__thumbnail">
+      <div class="thumbnail__logo">
+        <img src="@/assets/nikkei3.png" />
+      </div>
+      <div class="thumbnail__content text-center">
+        <h1 class="heading--primary">Welcome to NIkkeiForecast.</h1>
+        <h2 class="heading--secondary">Are you ready to join?</h2>
+      </div>
+      <div class="thumbnail__links">
+        <ul class="list-inline m-b-0 text-center"></ul>
+      </div>
+      <div class="signup__overlay"></div>
+    </div>
+    <div class="container__child signup__form">
+      <div class="text-input">
+        <input
+          type="text"
+          id="input1"
+          placeholder="sudo apt install"
+        />
+        <label for="input1">Username</label>
+      </div>
+      <br><br>
+      <div class="text-input">
+        <input
+          type="text"
+          id="input2"
+          placeholder="aaa@gmail.com"
+        />
+        <label for="input2">E-mail</label>
+      </div>
+      <br><br>
+      <div class="text-input">
+        <input
+          type="text"
+          id="input3"
+          placeholder="********"
+        />
+        <label for="input3">Password</label>
+      </div>
+            <br><br>
+      <div class="text-input">
+        <input
+          type="text"
+          id="input4"
+          placeholder="********"
+        />
+        <label for="input4">Re-Password</label>
+      </div>
+      <br>
+      <center>
+      <a href="" class="btn btn--orange btn--cubic btn--shadow">SEND</a>
+      </center>
+    </div>
+  </div>
+</template>
+
+<style>
+body {
+  font-family: "Noto Sans JP", sans-serif;
+  background-image: url("~@/assets/red.png") !important;
+  font-family: 'Josefin Slab', serif;
+}
+
+a,
+[type="submit"] {
+  transition: all 0.25s ease-in;
+}
+
+.signup__container {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  margin-right: auto;
+  margin-left: auto;
+  transform: translateY(-50%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50rem;
+  height: 30rem;
+  border-radius: 0.1875rem;
+  box-shadow: 0px 0.1875rem 0.4375rem rgba(0, 0, 0, 0.25);
+}
+
+.signup__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.76);
+}
+
+.container__child {
+  width: 50%;
+  height: 100%;
+  color: #fff;
+}
+
+.signup__thumbnail {
+  position: relative;
+  padding: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  background: url(http://ultraimg.com/images/spectre-login.jpg);
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
+}
+
+.thumbnail__logo,
+.thumbnail__content,
+.thumbnail__links {
+  position: relative;
+  z-index: 2;
+}
+
+.thumbnail__logo {
+  align-self: flex-start;
+}
+
+.signup__form {
+  padding: 2.5rem;
+  background: #fafafa;
+}
+
+img {
+  width: 50%;
+}
+
+.text-input {
+  position: relative;
+  margin-top: 10px;
+}
+.text-input input[type="text"] {
+  display: inline-block;
+  width: 320px;
+  height: 40px;
+  box-sizing: border-box;
+  outline: none;
+  border: 1px solid lightgray;
+  border-radius: 3px;
+  padding: 10px 10px 10px 140px;
+  transition: all 0.1s ease-out;
+}
+.text-input input[type="text"] + label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  height: 40px;
+  line-height: 40px;
+  color: white;
+  border-radius: 3px;
+  padding-left:20px;
+  padding-top:2px;
+  font-size: 15px;
+  background: #000000;
+  transform: translateZ(0) translateX(0);
+  transition: all 0.3s ease-in;
+  transition-delay: 0.2s;
+}
+.text-input input[type="text"]:focus + label {
+  transform: translateY(-120%) translateX(0%);
+  background: #ff0000;
+  border-radius: 3px;
+  transition: all 0.1s ease-out;
+}
+.text-input input[type="text"]:focus {
+  padding: 10px;
+  transition: all 0.3s ease-out;
+  transition-delay: 0.2s;
+}
+label{
+  width:120px;
+}
+
+a.btn--orange {
+  color: #fff;
+  background-color: #eb6100;
+  border-bottom: 2px solid #b84c00;
+}
+a.btn--orange:hover {
+  margin-top: 3px;
+  color: #fff;
+  background: #f56500;
+  border-bottom: 2px solid #b84c00;
+}
+a.btn--shadow {
+  -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
+}
+</style>
